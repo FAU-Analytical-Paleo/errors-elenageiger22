@@ -10,7 +10,14 @@
 # horizontal plane and the building to be 1?21' +/- 1'. What is the height of the
 # building and the fractional uncertainty in this estimate? 
 
+d <- 1
+m <- 21
 
+DMS2rad <- function(x){
+  rad <- pi*(d+m/60)/180
+  result <- print(rad, "rad")
+  return (result)
+}
 
 
 # Exercise 2 --------------------------------------------------------------
@@ -25,7 +32,7 @@ duration <- 29.66 - 25.53
 error <- 0.1 + 0.2
 
 print(paste0("The likely duration of the vulcanic activity is ", duration, " Ma,
-with an error od ", error, " Ma"))
+with an error of ", error, " Ma"))
 
 # Exercise 3 --------------------------------------------------------------
 
@@ -100,7 +107,6 @@ i1 <-  Reduce(`&`, lapply(eqscals[numeric.vars], function(v)
 trimmed <- eqscals[i1,]
 nrow(trimmed) # 19
 
-
 # There are no values that are 3*MAD below or above the median?
 # since I could not figure out that any of the values are actual outliers, I 
 # assume the mean is the "best" estimate for Mo
@@ -108,6 +114,15 @@ nrow(trimmed) # 19
 bestest <- mean(trimmed$`Mo(Nm)`)
 print(paste0("The best estimate for Mo is ", bestest, " Nm" ))
 
+# uncertainty 
 
+unc <- (sd(trimmed$`Mo(Nm)`)/sqrt(19)) # standard error
+print(paste0("The uncertainty for Mo is ", unc, " Nm, which is roughly 3.5 %" ))
 
+# d) Calculate the "moment" of an earthquake 
+
+Mw <- (log10(bestest)/1.5)- 6
+Mwc <- (log10(unc)/1.5)- 6
+
+print(paste0("The estimated moment of the earthquake is ", Mw, " with an uncertainty of ", Mwc))
 
