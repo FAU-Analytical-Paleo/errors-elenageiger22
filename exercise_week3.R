@@ -19,6 +19,28 @@ DMS2rad <- function(x){
   return (result)
 }
 
+# this approach does not work, so I go ahead with the values I calculated externally
+
+# DMS to radians
+rad <- 0.0236
+errorrad <- 0.003
+
+# fractional uncertainty
+
+radfrac <- (errorrad/rad)*100
+disfrac <- (25/2550)*100
+
+# height of building
+
+height <- round (tan(rad)*2550, digits = 2)
+heighterror <- round (tan(errorrad)*25, digits = 2)
+
+print(paste0("The hight of the building is ", height, " with an error of ", heighterror))
+# I am not sure this is the correct way to propagate an error
+
+# maybe more like this?
+heighterror2 <- round (sqrt(radfrac^2 + disfrac^2), digits = 2)
+print(paste0("The height of the building is ", height, " with an error of ", heighterror2))
 
 # Exercise 2 --------------------------------------------------------------
 
@@ -106,7 +128,7 @@ i1 <-  Reduce(`&`, lapply(eqscals[numeric.vars], function(v)
   (v > median(v) - 3* mad(v)) & (v < median(v) + 3 * mad(v))) )
 trimmed <- eqscals[i1,]
 nrow(trimmed) # 19
-
+        
 # There are no values that are 3*MAD below or above the median?
 # since I could not figure out that any of the values are actual outliers, I 
 # assume the mean is the "best" estimate for Mo
@@ -125,4 +147,3 @@ Mw <- (log10(bestest)/1.5)- 6
 Mwc <- (log10(unc)/1.5)- 6
 
 print(paste0("The estimated moment of the earthquake is ", Mw, " with an uncertainty of ", Mwc))
-
